@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Master Dashboard - R.M.S Academy</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+  <!-- ================= SIDEBAR ================= -->
+  <div class="sidebar">
+    <div class="logo">
+      <h3>MASTER</h3>
+    </div>
+
+    <ul>
+      <li class="active" onclick="loadClassMaster()">Class Master</li>
+      <li onclick="loadSectionMaster()">Section Master</li>
+      <li onclick="loadSubjectMaster()">Subject Master</li>
+      <li onclick="loadThemeMaster()">Theme Master</li>
+      <li onclick="loadCategoryMaster()">Category Master</li>
+      <li onclick="loadSessionMaster()">Session Master</li>
+      <li onclick="loadDepartmentMaster()">Department Master</li>
+      <li onclick="loadTeacherTimeTable()">Timetable Master</li>
+      <li onclick="goBack()">⬅ Back to Dashboard</li>
+    </ul>
+  </div>
+
+  <!-- ================= MAIN ================= -->
+  <div class="main">
+
+    <div class="header">
+      Master Dashboard
+    </div>
+
+    <div class="content" id="masterContent">
+      <div class="form-panel">
+        <h2>Class Master</h2>
+        <p>Add / Update / Delete classes here</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= SCRIPT ================= -->
+<script>
+
+/* =====================================================
+   COMMON HELPERS
+===================================================== */
+function setActive(index) {
+  document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
+  document.querySelectorAll(".sidebar ul li")[index].classList.add("active");
+}
+
+function goBack() {
+  window.location.href = "/dashboard.html";
+}
+
+/* =====================================================
+   CLASS MASTER (DB BASED)
+===================================================== */
+async function loadClassMaster() {
+  const c = document.getElementById("masterContent");
+
+  c.innerHTML = `
+    <div class="form-panel">
+      <h2>Class Master</h2>
+
+      <input type="hidden" id="editClassId">
+
+      <input id="className" placeholder="Class Name">
+      <input id="orderNo" type="number" placeholder="Order No">
+
+      <label>
+        <input type="checkbox" id="classActive" checked> Is Active
+      </label>
+      <br><br>
+
+      <button class="btn" onclick="saveClass()">Save</button>
+      <button class="btn" onclick="updateClass()">Update</button>
+      <button class="btn" onclick="resetClassForm()">New</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Order</th>
+            <th>Active</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="classTable"></tbody>
+      </table>
+    </div>
+  `;
+
+  loadClassTable();
+  setActive(0);
+}
+
+async function loadClassTable() {
+  const data = await fetch("/api/classes").then(r => r.json());
+
+  document.getElementById("classTable").innerHTML = data.map(c => `
+    <tr>
+      <td>${c.name}</td>
+      <td>${c.orderNo}</td>
+      <td>${c.isActive ? "✔" : "✖"}</td>
+      <td>
+        <button class="btn" onclick='editClass(${JSON.stringify(c)})'>Edit</button>
+        <button class="btn" onclick="deleteClass('${c._id}')">Delete</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+async function saveClass() {
+  await fetch("/api/classes", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: className.value,
+      orderNo: orderNo.value
+    })
+  });
+  resetClassForm();
+  loadClassTable();
+}
+
+function editClass(c) {
+  editClassId.value = c._id;
+  className.value = c.name;
+  orderNo.value = c.orderNo;
+  classActive.checked = c.isActive;
+}
+
+async function updateClass() {
+  await fetch(`/api/classes/${editClassId.value}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: className.value,
+      orderNo: orderNo.value,
+      isActive: classActive.checked
+    })
+  });
+  resetClassForm();
+  loadClassTable();
+}
+
+async function deleteClass(id) {
+  if (!confirm("Deactivate this class?")) return;
+  await fetch(`/api/classes/${id}`, { method: "DELETE" });
+  loadClassTable();
+}
+
+function resetClassForm() {
+  editClassId.value = "";
+  className.value = "";
+  orderNo.value = "";
+  classActive.checked = true;
+}
+
+/* =====================================================
+   SECTION MASTER (DB BASED)
+===================================================== */
+async function loadSectionMaster() {
+  const c = document.getElementById("masterContent");
+
+  c.innerHTML = `
+    <div class="form-panel">
+      <h2>Section Master</h2>
+
+      <input type="hidden" id="editSectionId">
+
+      <input id="sectionName" placeholder="Section Name (A/B/C)">
+
+      <label>
+        <input type="checkbox" id="sectionActive" checked> Is Active
+      </label>
+      <br><br>
+
+      <button class="btn" onclick="saveSection()">Save</button>
+      <button class="btn" onclick="updateSection()">Update</button>
+      <button class="btn" onclick="resetSectionForm()">New</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Section</th>
+            <th>Active</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="sectionTable"></tbody>
+      </table>
+    </div>
+  `;
+
+  loadSectionTable();
+  setActive(1);
+}
+
+async function loadSectionTable() {
+  const data = await fetch("/api/sections").then(r => r.json());
+
+  document.getElementById("sectionTable").innerHTML = data.map(s => `
+    <tr>
+      <td>${s.name}</td>
+      <td>${s.isActive ? "✔" : "✖"}</td>
+      <td>
+        <button class="btn" onclick='editSection(${JSON.stringify(s)})'>Edit</button>
+        <button class="btn" onclick="deleteSection('${s._id}')">Delete</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+async function saveSection() {
+  await fetch("/api/sections", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: sectionName.value })
+  });
+  resetSectionForm();
+  loadSectionTable();
+}
+
+function editSection(s) {
+  editSectionId.value = s._id;
+  sectionName.value = s.name;
+  sectionActive.checked = s.isActive;
+}
+
+async function updateSection() {
+  await fetch(`/api/sections/${editSectionId.value}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: sectionName.value,
+      isActive: sectionActive.checked
+    })
+  });
+  resetSectionForm();
+  loadSectionTable();
+}
+
+async function deleteSection(id) {
+  if (!confirm("Deactivate this section?")) return;
+  await fetch(`/api/sections/${id}`, { method: "DELETE" });
+  loadSectionTable();
+}
+
+function resetSectionForm() {
+  editSectionId.value = "";
+  sectionName.value = "";
+  sectionActive.checked = true;
+}
+
+/* =====================================================
+   SUBJECT MASTER (DB BASED WITH MAPPING)
+===================================================== */
+let editMode = false;
+async function loadSubjectMaster() {
+  const c = document.getElementById("masterContent");
+
+  const classes = await fetch("/api/classes").then(r => r.json());
+  const sections = await fetch("/api/sections").then(r => r.json());
+
+  c.innerHTML = `
+    <div class="form-panel">
+      <h2>Subject Master</h2>
+
+      <input type="hidden" id="editSubjectId">
+
+      <input id="subjectName" placeholder="Subject Name">
+
+      <select id="subjectClass">
+        <option value="">Select Class</option>
+        ${classes.map(cl => `<option value="${cl._id}">${cl.name}</option>`).join("")}
+      </select>
+
+      <select id="subjectSection">
+        <option value="">Select Section</option>
+        ${sections.map(sec => `<option value="${sec._id}">${sec.name}</option>`).join("")}
+      </select>
+
+      <label>
+        <input type="checkbox" id="subjectActive" checked> Is Active
+      </label>
+
+      <br><br>
+
+      <button class="btn" onclick="saveSubject()">Save</button>
+      <button class="btn" onclick="updateSubject()">Update</button>
+      <button class="btn" onclick="resetSubjectForm()">New</button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Class</th>
+            <th>Section</th>
+            <th>Active</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="subjectTable"></tbody>
+      </table>
+    </div>
+  `;
+
+  loadSubjectTable();
+  setActive(2);
+}
+
+
+async function saveSubject() {
+  if (editMode) {
+    alert("You are in edit mode. Click Update instead.");
+    return;
+  }
+
+  await fetch("/api/subjects", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: subjectName.value,
+      classId: subjectClass.value,
+      sectionId: subjectSection.value,
+      isActive: subjectActive.checked
+    })
+  });
+
+  resetSubjectForm();
+  loadSubjectTable();
+}
+
+
+async function loadSubjectTable() {
+  const data = await fetch("/api/subjects").then(r => r.json());
+
+  document.getElementById("subjectTable").innerHTML = data.map(s => `
+    <tr>
+      <td>${s.name}</td>
+      <td>${s.classId?.name || "-"}</td>
+      <td>${s.sectionId?.name || "-"}</td>
+      <td>${s.isActive ? "✔" : "✖"}</td>
+      <td>
+        <button class="btn" onclick="editSubject('${s._id}')">Edit</button>
+        <button class="btn" onclick="deleteSubject('${s._id}')">Delete</button>
+      </td>
+    </tr>
+  `).join("");
+}
+
+async function editSubject(id) {
+  const s = await fetch(`/api/subjects/${id}`).then(r => r.json());
+
+  editSubjectId.value = s._id;
+  subjectName.value = s.name || "";
+  subjectClass.value = s.classId?._id || s.classId || "";
+  subjectSection.value = s.sectionId?._id || s.sectionId || "";
+  subjectActive.checked = s.isActive;
+
+  editMode = true;   // 🔥 EDIT MODE ON
+}
+
+async function updateSubject() {
+  const id = document.getElementById("editSubjectId").value;
+
+  if (!editMode || !id) {
+    alert("Please select a subject to update");
+    return;
+  }
+
+  await fetch(`/api/subjects/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: subjectName.value,
+      classId: subjectClass.value,
+      sectionId: subjectSection.value,
+      isActive: subjectActive.checked
+    })
+  });
+
+  resetSubjectForm();
+  loadSubjectTable();
+}
+
+//detete subject only inactive 
+async function deleteSubject(id) {
+  if (!confirm("Deactivate this subject?")) return;
+
+  await fetch(`/api/subjects/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ isActive: false })
+  });
+
+  resetSubjectForm();   // 🔥 MUST
+  loadSubjectTable();
+}
+
+function resetSubjectForm() {
+  document.getElementById("editSubjectId").value = "";
+  subjectName.value = "";
+  subjectClass.value = "";
+  subjectSection.value = "";
+  subjectActive.checked = true;
+
+  editMode = false;   // 🔥 THIS WAS MISSING
+}
+
+/* =====================================================
+   PLACEHOLDER MASTERS
+===================================================== */
+function loadThemeMaster(){ loadContent("Theme Master","Manage UI themes"); setActive(3); }
+function loadCategoryMaster(){ loadContent("Category Master","Manage categories"); setActive(4); }
+
+
+function loadSessionMaster(){ loadContent("Session Master","Manage academic sessions"); setActive(5); }
+function loadDepartmentMaster(){ loadContent("Department Master","Manage departments"); setActive(6); }
+function loadTeacherTimeTable(){ loadContent("Teacher Timetable","Manage timetables"); setActive(7); }
+
+function loadContent(title, desc) {
+  masterContent.innerHTML = `
+    <div class="form-panel">
+      <h2>${title}</h2>
+      <p>${desc}</p>
+    </div>
+  `;
+}
+
+</script>
+</body>
+</html>

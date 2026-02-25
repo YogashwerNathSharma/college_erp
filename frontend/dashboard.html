@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>R.M.S Academy Dashboard</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<body>
+
+<div class="dashboard">
+
+  <!-- ===== SIDEBAR ===== -->
+  <div class="sidebar">
+    <div class="logo">
+      <img src="/logo.png" alt="School Logo">
+      <h3>R.M.S ACADEMY</h3>
+    </div>
+
+    <ul>
+      <li class="active">Dashboard</li>
+      <li onclick="openStudentDashboard()">Students Records</li>
+<script>
+function openStudentDashboard() {
+  window.location.href = "/student.dashboard.html";
+}
+</script>
+
+      <li>Fees Management</li>
+      <li>Attendance</li>
+      <li>Teacher Records</li>
+      <li>Reports</li>
+      <li onclick="openMasterDashboard()">Master</li>
+<script>
+function openMasterDashboard() {
+  window.location.href = "/master.dashboard.html";
+}
+</script> 
+      <li>Settings</li>
+      <li>Exam Result</li>
+      <li>Refresh</li>
+      <li onclick="logout()">Logout</li>
+    </ul>
+  </div>
+
+  <!-- ===== MAIN AREA ===== -->
+  <div class="main">
+
+    <!-- HEADER -->
+    <div class="header">
+      Welcome To R.M.S. ACADEMY,
+    </div>
+
+   <div class="content">
+
+  <!-- ===== DASHBOARD CARDS ===== -->
+  <div class="card-row">
+
+    <div class="card blue">
+      <h2>1200</h2>
+      <p>Total Students</p>
+    </div>
+
+    <div class="card green">
+      <h2>65</h2>
+      <p>Total Teachers</p>
+    </div>
+
+    <div class="card orange">
+      <h2>₹ 8,50,000</h2>
+      <p>Fees Collected</p>
+    </div>
+
+    <div class="card red">
+      <h2>₹ 1,20,000</h2>
+      <p>Pending Fees</p>
+    </div>
+
+  </div>
+
+</div>
+
+  <!-- ===== GRAPHS ===== -->
+  <div class="chart-row">
+
+    <div class="chart-box">
+      <h3>Monthly Fees Collection</h3>
+      <canvas id="feesChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+      <h3>Attendance Overview</h3>
+      <canvas id="attendanceChart"></canvas>
+    </div>
+
+  </div>
+
+</div>
+
+  
+  </div>
+
+</div>
+<script>
+/* ===== FEES COLLECTION BAR CHART ===== */
+const feesCtx = document.getElementById('feesChart').getContext('2d');
+
+new Chart(feesCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    datasets: [{
+      label: 'Fees Collection (₹)',
+      data: [120000, 150000, 135000, 170000, 160000, 180000],
+      backgroundColor: '#0099cc'
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: false
+      }
+    }
+  }
+});
+
+
+/* ===== ATTENDANCE DOUGHNUT CHART ===== */
+const attendanceCtx = document.getElementById('attendanceChart').getContext('2d');
+
+new Chart(attendanceCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Present', 'Absent'],
+    datasets: [{
+      data: [85, 15],
+      backgroundColor: ['#28a745', '#dc3545']
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'bottom'
+      }
+    }
+  }
+});
+</script>
+
+
+<script>
+  if (!localStorage.getItem("token")) {
+    window.location.href = "/login.html";
+  }
+
+  function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "/login.html";
+  }
+</script>
+
+</body>
+</html>

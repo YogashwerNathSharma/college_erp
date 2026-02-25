@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Records - R.M.S Academy</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+  <!-- ===== LEFT SIDEBAR (STUDENT MODULE) ===== -->
+  <div class="sidebar">
+    <div class="logo">
+      <h3>STUDENT RECORDS</h3>
+    </div>
+
+    <ul>
+      <li class="active" onclick="loadAdmission()">Student Admission</li>
+      <li onclick="loadStudentList()">Student List</li>
+      <li onclick="loadIcard()">Student I-Card</li>
+      <li onclick="loadProfile()">Student Profile</li>
+      <li onclick="goBack()">⬅ Back to Dashboard</li>
+    </ul>
+  </div>
+
+  <!-- ===== MAIN AREA ===== -->
+  <div class="main">
+
+    <div class="header">
+      Student Records Dashboard
+    </div>
+
+    <div class="content" id="studentContent">
+
+      <!-- DEFAULT VIEW -->
+      <div class="form-panel">
+        <h2>Student Admission</h2>
+        <p>Fill student admission form here.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function loadAdmission() {
+  document.getElementById("studentContent").innerHTML = `
+    <div class="form-panel">
+      <h2>Student Admission</h2>
+      <p>Admission form will be here</p>
+    </div>
+  `;
+  setActive(0);
+}
+
+function loadStudentList() {
+  document.getElementById("studentContent").innerHTML = `
+    <div class="form-panel">
+      <h2>Student List</h2>
+      <p>All students list here</p>
+    </div>
+  `;
+  setActive(1);
+}
+
+function loadIcard() {
+  document.getElementById("studentContent").innerHTML = `
+    <div class="form-panel">
+      <h2>Student I-Card</h2>
+      <p>ID card generation here</p>
+    </div>
+  `;
+  setActive(2);
+}
+
+function loadProfile() {
+  document.getElementById("studentContent").innerHTML = `
+    <div class="form-panel">
+      <h2>Student Profile</h2>
+      <p>Student profile details here</p>
+    </div>
+  `;
+  setActive(3);
+}
+
+function goBack() {
+  window.location.href = "/dashboard.html";
+}
+
+function setActive(index) {
+  const items = document.querySelectorAll(".sidebar ul li");
+  items.forEach(i => i.classList.remove("active"));
+  items[index].classList.add("active");
+}
+</script>
+
+</body>
+</html>

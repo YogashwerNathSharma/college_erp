@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Department Management</title>
+  <link rel="stylesheet" href="/css/crude.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="form-box">
+    <h2>Department Form</h2>
+
+    <input id="did" disabled placeholder="ID">
+    <input id="dname" placeholder="Department Name">
+    <input id="code" placeholder="Code">
+    <input id="hod" placeholder="HOD">
+
+    <button class="add" onclick="addDepartment()">Add</button>
+    <button class="update" onclick="updateDepartment()">Update</button>
+    <button class="delete" onclick="deleteDepartment()">Delete</button>
+  </div>
+
+  <div class="table-box">
+    <h2>Department List</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Code</th>
+          <th>HOD</th>
+        </tr>
+      </thead>
+      <tbody id="deptBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script src="/js/department.js"></script>
+</body>
+</html>

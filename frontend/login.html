@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="login-box">
+    <h2>Login</h2>
+
+    <form id="loginForm">
+      <!-- Username / Email -->
+      <input
+        type="email"
+        id="email"
+        placeholder="Enter Email"
+        required
+      />
+
+      <!-- Password -->
+      <input
+        type="password"
+        id="password"
+        placeholder="Enter Password"
+        required
+      />
+
+      <!-- Show Password -->
+      <div class="show-pass">
+        <input type="checkbox" id="showPassword" />
+        <label for="showPassword">Show Password</label>
+      </div>
+
+      <!-- Login Button -->
+      <button type="submit">Login</button>
+
+      <!-- Error message -->
+      <p id="errorMsg"></p>
+
+      <!-- Forgot password -->
+      <a href="#" id="forgotPassword">Forgot Password?</a>
+      <p class="register-link">
+        Don't have an account?
+        <a href="register.html">Create Account</a>
+    </form>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

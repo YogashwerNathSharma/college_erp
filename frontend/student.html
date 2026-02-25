@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Dashboard</title>
+  <link rel="stylesheet" href="/css/crude.css">
+  <style>
+    body {
+      font-family: Arial;
+      background: #eef1f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    /* LEFT FORM */
+    .form-box {
+      width: 30%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .form-box h2 {
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin: 6px 0;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .add { background: #28a745; color: white; }
+    .update { background: #ffc107; }
+    .delete { background: #dc3545; color: white; }
+
+    /* RIGHT TABLE */
+    .table-box {
+      width: 70%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    tr:hover {
+      background: #f1f1f1;
+      cursor: pointer;
+    }
+
+    th {
+      background: #343a40;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <!-- LEFT SIDE FORM -->
+  <div class="form-box">
+    <h2>Student Form</h2>
+
+    <input id="id" placeholder="Student ID (auto)">
+    <input id="name" placeholder="Name">
+    <input id="Father Name" placeholder="Father Name">
+    <input id="Class" placeholder="Class">
+    
+    <input id="email" placeholder="Email">
+    <input id="course" placeholder="Course">
+
+    <button class="add" onclick="addStudent()">➕ Add Student</button>
+    <button class="update" onclick="updateStudent()">✏ Update Student</button>
+    <button class="delete" onclick="deleteStudent()">❌ Delete Student</button>
+  </div>
+
+  <!-- RIGHT SIDE DATA GRID -->
+  <div class="table-box">
+    <h2>Student List</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Father Name</th>
+          <th>Class</th>
+          
+          <th>Email</th>
+          <th>Course</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+<script>
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Unauthorized. Please login.");
+    window.location.href = "/login.html";
+  }
+</script>

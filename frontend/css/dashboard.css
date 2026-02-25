@@ -1,0 +1,184 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Segoe UI, Arial;
+}
+
+body {
+  background: #f4f6f8;
+}
+
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 230px;
+  background: #007aa3;
+  color: #fff;
+}
+
+.logo {
+  background: #006b8f;
+  text-align: center;
+  padding: 15px;
+}
+
+.logo img {
+  width: 60px;
+}
+
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar ul li {
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255,255,255,.2);
+  cursor: pointer;
+}
+
+.sidebar ul li:hover,
+.sidebar ul li.active {
+  background: #0099cc;
+}
+
+/* ===== MAIN ===== */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.header {
+  height: 60px;
+  background: #0099cc;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+/* CONTENT */
+.content {
+  padding: 20px;
+}
+
+/* FORM PANEL */
+.form-panel {
+  background: #0099cc;
+  padding: 15px;
+  color: #fff;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-row input {
+  padding: 5px;
+}
+
+.checkbox {
+  margin-left: 10px;
+}
+
+.btn-row {
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 6px 14px;
+  background: #006b8f;
+  color: #fff;
+  border: none;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #004f66;
+}
+
+.search {
+  padding: 5px;
+}
+
+/* TABLE */
+.table-container {
+  margin-top: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #000;
+  color: #fff;
+}
+
+thead {
+  background: #006b8f;
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #333;
+  text-align: center;
+}
+/* ===== DASHBOARD CARDS ===== */
+.card-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.card {
+  padding: 20px;
+  color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,.2);
+}
+
+.card h2 {
+  font-size: 28px;
+}
+
+.card p {
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+/* CARD COLORS */
+.blue { background: #0099cc; }
+.green { background: #28a745; }
+.orange { background: #ff9800; }
+.red { background: #dc3545; }
+
+/* ===== CHARTS ===== */
+.chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.chart-box {
+  background: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  box-shadow: 0 4px 8px rgba(0,0,0,.1);
+}
+
+.chart-box h3 {
+  margin-bottom: 10px;
+  color: #007aa3;
+}
+
