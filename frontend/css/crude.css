@@ -74,3 +74,16 @@ td {
   padding: 8px;
   border-bottom: 1px solid #ddd;
 }
+@media(max-width:768px){
+.container{
+  width: 100% ;
+}
+.form-box{
+  width:100%;
+}
+table{
+  display:block;
+  overflow-x:auto;
+  width:100%;
+}
+}
