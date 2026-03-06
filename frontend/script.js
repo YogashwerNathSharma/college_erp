@@ -45,7 +45,9 @@ function selectRow(row) {
   email.value = row.dataset.email;
   course.value = row.dataset.course;
 }
-
+function toggleMenu(){
+  document.querySelector(".sidebar").classList.toggle("active");
+}
 async function addStudent() {
 
   if (!name.value.trim()) {

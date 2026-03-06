@@ -81,6 +81,20 @@ td {
 .form-box{
   width:100%;
 }
+.sidebar{
+  position:fixed;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  transition: 0.3S;
+}
+.sidebar{
+  LEFT:0;
+}
+.main-content{
+  margin-left:0;
+  width:100%;
+}
 table{
   display:block;
   overflow-x:auto;
