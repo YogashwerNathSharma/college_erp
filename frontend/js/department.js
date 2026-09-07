@@ -12,6 +12,24 @@ function headers() {
   };
 }
 
+async function loadHodUsers(selectedHod = "") {
+  try {
+    const res = await fetch(API + "/hod-users", { headers: headers() });
+    if (!res.ok) throw new Error("Failed to load HOD users");
+
+    const users = await res.json();
+    hod.innerHTML = '<option value="">Select HOD User</option>' +
+      users.map(user => `
+        <option value="${user._id}">${user.email}</option>
+      `).join("");
+
+    hod.value = selectedHod || "";
+  } catch (err) {
+    console.error("HOD dropdown load failed:", err);
+    hod.innerHTML = '<option value="">Unable to load HOD users</option>';
+  }
+}
+
 async function loadDepartments() {
   const res = await fetch(API, { headers: headers() });
   const data = await res.json();
@@ -20,20 +38,20 @@ async function loadDepartments() {
     <tr onclick="selectRow(this)"
       data-id="${d._id}"
       data-name="${d.name}"
-      data-code="${d.code}"
-      data-hod="${d.hod}">
+      data-code="${d.code || ""}"
+      data-hod="${d.hod || ""}">
       <td>${d.name}</td>
-      <td>${d.code}</td>
-      <td>${d.hod}</td>
+      <td>${d.code || ""}</td>
+      <td>${d.hod || ""}</td>
     </tr>
   `).join("");
 }
 
-function selectRow(row) {
+async function selectRow(row) {
   did.value = row.dataset.id;
   dname.value = row.dataset.name;
   code.value = row.dataset.code;
-  hod.value = row.dataset.hod;
+  await loadHodUsers(row.dataset.hod);
 }
 
 async function addDepartment() {
@@ -70,4 +88,5 @@ async function deleteDepartment() {
   loadDepartments();
 }
 
+loadHodUsers();
 loadDepartments();
