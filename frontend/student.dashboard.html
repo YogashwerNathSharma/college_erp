@@ -4,18 +4,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Records - R.M.S Academy</title>
   <link rel="stylesheet" href="/css/dashboard.css">
+  <style>
+    .student-list-panel { width: 100%; box-sizing: border-box; }
+    .student-list-toolbar { display:flex; gap:10px; margin:0 0 16px; flex-wrap:wrap; }
+    .student-search { flex:1; min-width:240px; padding:11px 14px; border:1px solid #d9dee7; border-radius:8px; font-size:14px; outline:none; }
+    .student-search:focus { border-color:#5b7cff; box-shadow:0 0 0 3px rgba(91,124,255,.12); }
+    .student-table-wrap { overflow:auto; border:1px solid #e7eaf0; border-radius:10px; background:#fff; }
+    .student-table { width:100%; border-collapse:collapse; min-width:650px; }
+    .student-table th, .student-table td { padding:12px 14px; text-align:left; border-bottom:1px solid #edf0f4; }
+    .student-table th { font-weight:600; background:#f7f8fa; white-space:nowrap; }
+    .student-table tbody tr { cursor:pointer; transition:background .15s ease; }
+    .student-table tbody tr:hover { background:#f7f9ff; }
+    .student-empty, .student-error, .student-loading { padding:28px; text-align:center; color:#697386; }
+    .student-error { color:#b42318; }
+    .student-count { margin:8px 0 0; color:#697386; font-size:13px; }
+  </style>
 </head>
-
 <body>
-
 <div class="dashboard">
-
-  <!-- ===== LEFT SIDEBAR (STUDENT MODULE) ===== -->
   <div class="sidebar">
-    <div class="logo">
-      <h3>STUDENT RECORDS</h3>
-    </div>
-
+    <div class="logo"><h3>STUDENT RECORDS</h3></div>
     <ul>
       <li class="active" onclick="loadAdmission()">Student Admission</li>
       <li onclick="loadStudentList()">Student List</li>
@@ -25,78 +33,119 @@
     </ul>
   </div>
 
-  <!-- ===== MAIN AREA ===== -->
   <div class="main">
-
-    <div class="header">
-      Student Records Dashboard
-    </div>
-
+    <div class="header">Student Records Dashboard</div>
     <div class="content" id="studentContent">
-
-      <!-- DEFAULT VIEW -->
       <div class="form-panel">
         <h2>Student Admission</h2>
         <p>Fill student admission form here.</p>
       </div>
-
     </div>
-
   </div>
-
 </div>
 
 <script>
+const STUDENT_API = "/api/students";
+let studentCache = [];
+let studentListRequest = 0;
+
+function authHeaders() {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: "Bearer " + token } : {};
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+}
+
 function loadAdmission() {
-  document.getElementById("studentContent").innerHTML = `
-    <div class="form-panel">
-      <h2>Student Admission</h2>
-      <p>Admission form will be here</p>
-    </div>
-  `;
+  document.getElementById("studentContent").innerHTML = '<div class="form-panel"><h2>Student Admission</h2><p>Admission form will be here</p></div>';
   setActive(0);
 }
 
-function loadStudentList() {
-  document.getElementById("studentContent").innerHTML = `
-    <div class="form-panel">
-      <h2>Student List</h2>
-      <p>All students list here</p>
-    </div>
-  `;
+async function loadStudentList() {
+  const content = document.getElementById("studentContent");
   setActive(1);
+  content.innerHTML = `
+    <div class="form-panel student-list-panel">
+      <h2>Student List</h2>
+      <div class="student-list-toolbar">
+        <input id="studentSearch" class="student-search" type="search" placeholder="Search by name, father name, class, email or course..." autocomplete="off">
+      </div>
+      <div id="studentListStatus" class="student-loading">Loading students...</div>
+      <div id="studentTableWrap" class="student-table-wrap" style="display:none">
+        <table class="student-table">
+          <thead><tr><th>Name</th><th>Father Name</th><th>Class</th><th>Email</th><th>Course</th></tr></thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+      </div>
+      <div id="studentCount" class="student-count"></div>
+    </div>`;
+
+  const search = document.getElementById("studentSearch");
+  search.addEventListener("input", renderStudentRows);
+  search.focus();
+
+  const requestId = ++studentListRequest;
+  try {
+    const response = await fetch(STUDENT_API, { headers: authHeaders(), cache: "no-store" });
+    if (!response.ok) throw new Error("Unable to load student records (" + response.status + ")");
+    const data = await response.json();
+    if (requestId !== studentListRequest) return;
+    studentCache = Array.isArray(data) ? data : [];
+    renderStudentRows();
+  } catch (error) {
+    if (requestId !== studentListRequest) return;
+    const status = document.getElementById("studentListStatus");
+    if (status) status.className = "student-error";
+    if (status) status.textContent = error.message || "Unable to load student records.";
+  }
+}
+
+function renderStudentRows() {
+  const body = document.getElementById("studentTableBody");
+  const status = document.getElementById("studentListStatus");
+  const wrap = document.getElementById("studentTableWrap");
+  const count = document.getElementById("studentCount");
+  if (!body || !status || !wrap || !count) return;
+
+  const query = (document.getElementById("studentSearch")?.value || "").trim().toLowerCase();
+  const rows = studentCache.filter(s => [s.name, s.fatherName, s.father_name, s.class, s.email, s.course]
+    .some(v => String(v ?? "").toLowerCase().includes(query)));
+
+  body.innerHTML = rows.map(s => `
+    <tr>
+      <td>${escapeHtml(s.name)}</td>
+      <td>${escapeHtml(s.fatherName ?? s.father_name)}</td>
+      <td>${escapeHtml(s.class)}</td>
+      <td>${escapeHtml(s.email)}</td>
+      <td>${escapeHtml(s.course)}</td>
+    </tr>`).join("");
+
+  status.style.display = rows.length ? "none" : "block";
+  status.className = rows.length ? "student-loading" : "student-empty";
+  if (!rows.length) status.textContent = query ? "No students match your search." : "No student records found.";
+  wrap.style.display = rows.length ? "block" : "none";
+  count.textContent = `${rows.length} student${rows.length === 1 ? "" : "s"}${query ? ` found for “${query}”` : ""}`;
 }
 
 function loadIcard() {
-  document.getElementById("studentContent").innerHTML = `
-    <div class="form-panel">
-      <h2>Student I-Card</h2>
-      <p>ID card generation here</p>
-    </div>
-  `;
+  document.getElementById("studentContent").innerHTML = '<div class="form-panel"><h2>Student I-Card</h2><p>ID card generation here</p></div>';
   setActive(2);
 }
 
 function loadProfile() {
-  document.getElementById("studentContent").innerHTML = `
-    <div class="form-panel">
-      <h2>Student Profile</h2>
-      <p>Student profile details here</p>
-    </div>
-  `;
+  document.getElementById("studentContent").innerHTML = '<div class="form-panel"><h2>Student Profile</h2><p>Student profile details here</p></div>';
   setActive(3);
 }
 
-function goBack() {
-  window.location.href = "/dashboard.html";
-}
+function goBack() { window.location.href = "/dashboard.html"; }
 
 function setActive(index) {
-  const items = document.querySelectorAll(".sidebar ul li");
-  items.forEach(i => i.classList.remove("active"));
-  items[index].classList.add("active");
+  document.querySelectorAll(".sidebar ul li").forEach(i => i.classList.remove("active"));
+  const item = document.querySelectorAll(".sidebar ul li")[index];
+  if (item) item.classList.add("active");
 }
 </script>
-
 </body>
 </html>
