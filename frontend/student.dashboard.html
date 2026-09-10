@@ -1,23 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Student Records - R.M.S Academy</title>
   <link rel="stylesheet" href="/css/dashboard.css">
   <style>
-    .student-list-panel { width: 100%; box-sizing: border-box; }
-    .student-list-toolbar { display:flex; gap:10px; margin:0 0 16px; flex-wrap:wrap; }
-    .student-search { flex:1; min-width:240px; padding:11px 14px; border:1px solid #d9dee7; border-radius:8px; font-size:14px; outline:none; }
-    .student-search:focus { border-color:#5b7cff; box-shadow:0 0 0 3px rgba(91,124,255,.12); }
-    .student-table-wrap { overflow:auto; border:1px solid #e7eaf0; border-radius:10px; background:#fff; }
-    .student-table { width:100%; border-collapse:collapse; min-width:650px; }
-    .student-table th, .student-table td { padding:12px 14px; text-align:left; border-bottom:1px solid #edf0f4; }
-    .student-table th { font-weight:600; background:#f7f8fa; white-space:nowrap; }
-    .student-table tbody tr { cursor:pointer; transition:background .15s ease; }
-    .student-table tbody tr:hover { background:#f7f9ff; }
-    .student-empty, .student-error, .student-loading { padding:28px; text-align:center; color:#697386; }
-    .student-error { color:#b42318; }
-    .student-count { margin:8px 0 0; color:#697386; font-size:13px; }
+    .student-shell{width:100%;box-sizing:border-box}.student-card{background:#fff;border:1px solid #e6eaf0;border-radius:14px;padding:22px;box-sizing:border-box}.student-card h2{margin:0 0 18px}.student-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.student-field{display:flex;flex-direction:column;gap:6px}.student-field.full{grid-column:1/-1}.student-field label{font-size:13px;font-weight:600;color:#475467}.student-field input,.student-field select,.student-field textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d0d5dd;border-radius:9px;background:#fff;color:#101828;font:inherit;outline:none}.student-field input:focus,.student-field select:focus,.student-field textarea:focus{border-color:#6172f3;box-shadow:0 0 0 3px rgba(97,114,243,.12)}.student-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.student-btn{border:0;border-radius:9px;padding:10px 15px;font-weight:600;cursor:pointer}.student-btn.primary{background:#4f46e5;color:#fff}.student-btn.secondary{background:#eef2f6;color:#344054}.student-btn.danger{background:#fee4e2;color:#b42318}.student-btn:disabled{opacity:.55;cursor:not-allowed}.student-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.student-search{flex:1;min-width:230px;padding:11px 13px;border:1px solid #d0d5dd;border-radius:9px;outline:none}.student-table-wrap{overflow:auto;border:1px solid #e4e7ec;border-radius:11px}.student-table{width:100%;min-width:820px;border-collapse:collapse}.student-table th,.student-table td{padding:11px 13px;text-align:left;border-bottom:1px solid #eef0f3;font-size:13px}.student-table th{background:#f8f9fb;font-weight:700;white-space:nowrap}.student-table tbody tr:hover{background:#f8f9ff}.student-link{border:0;background:none;padding:0;color:#3445d1;font-weight:650;cursor:pointer}.student-status{padding:24px;text-align:center;color:#667085}.student-error{padding:13px;border-radius:9px;background:#fef3f2;color:#b42318;margin-bottom:14px}.student-success{padding:13px;border-radius:9px;background:#ecfdf3;color:#027a48;margin-bottom:14px}.student-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}.student-kpi{padding:15px;border:1px solid #e6eaf0;border-radius:12px;background:#f8faff}.student-kpi strong{display:block;font-size:21px;margin-top:3px}.profile-grid{display:grid;grid-template-columns:180px 1fr;gap:22px}.profile-photo{width:160px;height:160px;border-radius:14px;object-fit:cover;background:#eef2f6}.profile-photo.placeholder{display:flex;align-items:center;justify-content:center;font-size:46px;font-weight:700;color:#667085}.profile-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.detail{padding:11px;background:#f8f9fb;border-radius:9px}.detail small{display:block;color:#667085;font-size:11px;margin-bottom:3px}.id-card{width:min(440px,100%);margin:auto;border:1px solid #d0d5dd;border-radius:16px;overflow:hidden;background:#fff;box-shadow:0 8px 30px rgba(16,24,40,.08)}.id-head{padding:18px;text-align:center;background:#f2f4f7}.id-head h2{margin:0;font-size:18px}.id-body{padding:18px}.id-photo{width:100px;height:120px;object-fit:cover;border-radius:9px;border:1px solid #d0d5dd}.id-row{display:flex;gap:16px}.id-info{flex:1}.id-info p{margin:5px 0;font-size:13px}.muted{color:#667085}.student-back{margin-bottom:12px}.hidden{display:none!important}@media(max-width:850px){.student-grid,.student-kpis{grid-template-columns:1fr 1fr}.profile-grid{grid-template-columns:1fr}.profile-details{grid-template-columns:1fr 1fr}}@media(max-width:560px){.student-grid,.student-kpis,.profile-details{grid-template-columns:1fr}.student-card{padding:15px}}
   </style>
 </head>
 <body>
@@ -32,128 +21,84 @@
       <li onclick="goBack()">⬅ Back to Dashboard</li>
     </ul>
   </div>
-
   <div class="main">
     <div class="header">Student Records Dashboard</div>
-    <div class="content" id="studentContent">
-      <div class="form-panel">
-        <h2>Student Admission</h2>
-        <p>Fill student admission form here.</p>
-      </div>
-    </div>
+    <div class="content" id="studentContent"></div>
   </div>
 </div>
-
 <script>
-const STUDENT_API = "/api/students";
-let studentCache = [];
-let studentListRequest = 0;
+const API='/api/students';
+let students=[];let currentStudent=null;let classes=[];let sections=[];let academicYears=[];
 
-function authHeaders() {
-  const token = localStorage.getItem("token");
-  return token ? { Authorization: "Bearer " + token } : {};
+function authHeaders(json=false){const h={Authorization:'Bearer '+(localStorage.getItem('token')||'')};if(json)h['Content-Type']='application/json';return h;}
+async function api(path,options={}){const response=await fetch(path,{...options,headers:{...authHeaders(!!options.body),...(options.headers||{})},cache:'no-store'});let data={};try{data=await response.json()}catch{}if(!response.ok)throw new Error(data.message||('Request failed ('+response.status+')'));return data;}
+function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function setActive(i){document.querySelectorAll('.sidebar ul li').forEach(x=>x.classList.remove('active'));const x=document.querySelectorAll('.sidebar ul li')[i];if(x)x.classList.add('active');}
+function goBack(){window.location.href='/dashboard.html';}
+function val(id){return document.getElementById(id)?.value?.trim()||'';}
+function selectOptions(list,selected=''){return list.map(x=>`<option value="${esc(x.id)}" ${x.id===selected?'selected':''}>${esc(x.name)}</option>`).join('');}
+
+async function loadAcademicAndClasses(){
+  const [yr,cl]=await Promise.allSettled([api('/api/academic'),api('/api/class')]);
+  academicYears=yr.status==='fulfilled'?(yr.value.data||yr.value||[]):[];classes=cl.status==='fulfilled'?(cl.value.data||cl.value||[]):[];
+  if(!Array.isArray(academicYears))academicYears=[];if(!Array.isArray(classes))classes=[];
+}
+async function loadSections(classId){
+  if(!classId){sections=[];return;}
+  try{const r=await api('/api/section?classId='+encodeURIComponent(classId));sections=Array.isArray(r.data)?r.data:[];}catch{sections=[];}
 }
 
-function escapeHtml(value) {
-  return String(value ?? "").replace(/[&<>'"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]));
+async function loadAdmission(){setActive(0);const c=document.getElementById('studentContent');c.innerHTML='<div class="student-status">Loading admission form...</div>';await loadAcademicAndClasses();
+  let next='';try{const r=await api('/api/students/next-admission-no');next=r.admissionNo||'';}catch{}
+  c.innerHTML=`<div class="student-card student-shell"><h2>Student Admission</h2><div id="admissionMessage"></div>
+    <form id="admissionForm"><div class="student-grid">
+      <div class="student-field"><label>First Name *</label><input id="firstName" required></div>
+      <div class="student-field"><label>Last Name *</label><input id="lastName" required></div>
+      <div class="student-field"><label>Gender *</label><select id="gender" required><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option></select></div>
+      <div class="student-field"><label>Date of Birth *</label><input id="dob" type="date" required></div>
+      <div class="student-field"><label>Admission No.</label><input id="admissionNo" value="${esc(next)}"></div>
+      <div class="student-field"><label>Academic Year *</label><select id="academicYearId" required><option value="">Select Academic Year</option>${selectOptions(academicYears)}</select></div>
+      <div class="student-field"><label>Class *</label><select id="classId" required><option value="">Select Class</option>${selectOptions(classes)}</select></div>
+      <div class="student-field"><label>Section</label><select id="sectionId"><option value="">Select Section</option></select></div>
+      <div class="student-field"><label>Roll Number</label><input id="rollNumber"></div>
+      <div class="student-field"><label>Blood Group</label><select id="bloodGroup"><option value="">Select</option><option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option></select></div>
+      <div class="student-field"><label>Phone</label><input id="phone" inputmode="tel"></div>
+      <div class="student-field"><label>Email</label><input id="email" type="email"></div>
+      <div class="student-field"><label>Father Name *</label><input id="fatherName" required></div>
+      <div class="student-field"><label>Father Phone *</label><input id="fatherPhone" inputmode="tel" required></div>
+      <div class="student-field"><label>Father Occupation</label><input id="fatherOccupation"></div>
+      <div class="student-field"><label>Mother Name</label><input id="motherName"></div>
+      <div class="student-field"><label>Mother Phone</label><input id="motherPhone" inputmode="tel"></div>
+      <div class="student-field"><label>Category</label><input id="category"></div>
+      <div class="student-field"><label>Nationality</label><input id="nationality" value="Indian"></div>
+      <div class="student-field"><label>Aadhaar No.</label><input id="aadharNo" inputmode="numeric"></div>
+      <div class="student-field full"><label>Address</label><textarea id="address" rows="3">N/A</textarea></div>
+      <div class="student-field"><label>Photo</label><input id="photo" type="file" accept="image/*"></div>
+    </div><div class="student-actions"><button class="student-btn primary" id="saveAdmission">Save Admission</button><button type="button" class="student-btn secondary" onclick="loadAdmission()">Reset</button></div></form></div>`;
+  document.getElementById('classId').addEventListener('change',async e=>{await loadSections(e.target.value);document.getElementById('sectionId').innerHTML='<option value="">Select Section</option>'+selectOptions(sections);});
+  document.getElementById('admissionForm').addEventListener('submit',submitAdmission);
 }
 
-function loadAdmission() {
-  document.getElementById("studentContent").innerHTML = '<div class="form-panel"><h2>Student Admission</h2><p>Admission form will be here</p></div>';
-  setActive(0);
+async function submitAdmission(e){e.preventDefault();const msg=document.getElementById('admissionMessage');const btn=document.getElementById('saveAdmission');btn.disabled=true;msg.innerHTML='';
+  const payload={firstName:val('firstName'),lastName:val('lastName'),gender:val('gender'),dob:val('dob'),bloodGroup:val('bloodGroup'),category:val('category'),nationality:val('nationality')||'Indian',aadharNo:val('aadharNo'),email:val('email'),phone:val('phone'),address:val('address')||'N/A',admissionNo:val('admissionNo'),rollNumber:val('rollNumber'),fatherName:val('fatherName'),fatherPhone:val('fatherPhone'),fatherOccupation:val('fatherOccupation'),motherName:val('motherName')||'N/A',motherPhone:val('motherPhone'),classId:val('classId'),sectionId:val('sectionId'),academicYearId:val('academicYearId')};
+  try{const r=await api(API,{method:'POST',body:JSON.stringify(payload)});const id=r.data?.student?.id||r.data?.id;msg.innerHTML='<div class="student-success">Student admitted successfully. Admission No: '+esc(r.data?.student?.admissionNo||payload.admissionNo)+'</div>';if(id&&document.getElementById('photo').files[0]){const fd=new FormData();fd.append('photo',document.getElementById('photo').files[0]);try{await fetch(API+'/'+encodeURIComponent(id)+'/photo',{method:'POST',headers:authHeaders(false),body:fd});}catch{}}setTimeout(()=>loadStudentList(),700);}catch(err){msg.innerHTML='<div class="student-error">'+esc(err.message)+'</div>';}finally{btn.disabled=false;}
 }
 
-async function loadStudentList() {
-  const content = document.getElementById("studentContent");
-  setActive(1);
-  content.innerHTML = `
-    <div class="form-panel student-list-panel">
-      <h2>Student List</h2>
-      <div class="student-list-toolbar">
-        <input id="studentSearch" class="student-search" type="search" placeholder="Search by name, father name, class, email or course..." autocomplete="off">
-      </div>
-      <div id="studentListStatus" class="student-loading">Loading students...</div>
-      <div id="studentTableWrap" class="student-table-wrap" style="display:none">
-        <table class="student-table">
-          <thead><tr><th>Name</th><th>Father Name</th><th>Class</th><th>Email</th><th>Course</th></tr></thead>
-          <tbody id="studentTableBody"></tbody>
-        </table>
-      </div>
-      <div id="studentCount" class="student-count"></div>
-    </div>`;
-
-  const search = document.getElementById("studentSearch");
-  search.addEventListener("input", renderStudentRows);
-  search.focus();
-
-  const requestId = ++studentListRequest;
-  try {
-    const response = await fetch(STUDENT_API, { headers: authHeaders(), cache: "no-store" });
-    if (!response.ok) throw new Error("Unable to load student records (" + response.status + ")");
-    const data = await response.json();
-    if (requestId !== studentListRequest) return;
-
-    // REST API returns { success: true, data: { students, total, ... } }.
-    // The previous code expected the response itself to be an array, which
-    // silently converted a successful API response into an empty student list.
-    const students = data?.data?.students ?? data?.students ?? data?.data ?? data;
-    studentCache = Array.isArray(students) ? students : [];
-    renderStudentRows();
-  } catch (error) {
-    if (requestId !== studentListRequest) return;
-    const status = document.getElementById("studentListStatus");
-    if (status) status.className = "student-error";
-    if (status) status.textContent = error.message || "Unable to load student records.";
-  }
+async function loadStudentList(){setActive(1);const c=document.getElementById('studentContent');c.innerHTML='<div class="student-card"><h2>Student List</h2><div class="student-status">Loading students...</div></div>';
+  try{const r=await api(API+'?limit=1000');const raw=r.data?.students||r.data||r.students||[];students=Array.isArray(raw)?raw:[];renderStudentList();}catch(err){c.innerHTML='<div class="student-card"><h2>Student List</h2><div class="student-error">'+esc(err.message)+'</div><button class="student-btn secondary" onclick="loadStudentList()">Retry</button></div>';}
 }
+function renderStudentList(){const c=document.getElementById('studentContent');c.innerHTML=`<div class="student-card student-shell"><div class="student-toolbar"><h2 style="margin:0;flex:0 0 auto">Student List</h2><input id="studentSearch" class="student-search" placeholder="Search name, admission no, father name, phone, roll no..." autocomplete="off"><button class="student-btn primary" onclick="loadAdmission()">+ New Admission</button><button class="student-btn secondary" onclick="loadStudentList()">Refresh</button></div><div class="student-kpis"><div class="student-kpi">Total<strong id="studentTotal">0</strong></div><div class="student-kpi">Active<strong id="studentActive">0</strong></div><div class="student-kpi">Showing<strong id="studentShowing">0</strong></div></div><div id="studentRows"></div></div>`;document.getElementById('studentSearch').addEventListener('input',()=>drawRows(document.getElementById('studentSearch').value));drawRows('');}
+function drawRows(q){q=(q||'').toLowerCase().trim();const rows=students.filter(s=>[s.fullName,s.firstName,s.lastName,s.admissionNo,s.srNo,s.rollNumber,s.fatherName,s.fatherPhone,s.phone,s.email].some(v=>String(v??'').toLowerCase().includes(q)));document.getElementById('studentTotal').textContent=students.length;document.getElementById('studentActive').textContent=students.filter(s=>s.status==='active'||s.status==='pending'||s.status==='verified').length;document.getElementById('studentShowing').textContent=rows.length;if(!rows.length){document.getElementById('studentRows').innerHTML='<div class="student-status">'+(q?'No students match your search.':'No student records found.')+'</div>';return;}document.getElementById('studentRows').innerHTML='<div class="student-table-wrap"><table class="student-table"><thead><tr><th>Name</th><th>Admission No.</th><th>Roll No.</th><th>Class</th><th>Section</th><th>Father Name</th><th>Phone</th><th>Status</th><th>Action</th></tr></thead><tbody>'+rows.map(s=>{const e=s.enrollments?.[0]||{};return `<tr><td><button class="student-link" onclick="loadProfile('${esc(s.id)}')">${esc(s.fullName||((s.firstName||'')+' '+(s.lastName||'')).trim())}</button></td><td>${esc(s.admissionNo)}</td><td>${esc(s.rollNumber||e.rollNumber)}</td><td>${esc(e.class?.name)}</td><td>${esc(e.section?.name)}</td><td>${esc(s.fatherName)}</td><td>${esc(s.phone||s.fatherPhone)}</td><td>${esc(s.status)}</td><td><button class="student-btn secondary" onclick="loadProfile('${esc(s.id)}')">View</button></td></tr>`}).join('')+'</tbody></table></div>';}
 
-function renderStudentRows() {
-  const body = document.getElementById("studentTableBody");
-  const status = document.getElementById("studentListStatus");
-  const wrap = document.getElementById("studentTableWrap");
-  const count = document.getElementById("studentCount");
-  if (!body || !status || !wrap || !count) return;
+async function loadProfile(id){setActive(3);const c=document.getElementById('studentContent');c.innerHTML='<div class="student-card"><div class="student-status">Loading student profile...</div></div>';try{const r=await api(API+'/'+encodeURIComponent(id));currentStudent=r.data||r.student||r;renderProfile(currentStudent);}catch(err){c.innerHTML='<div class="student-card"><div class="student-error">'+esc(err.message)+'</div><button class="student-btn secondary" onclick="loadStudentList()">Back to List</button></div>';}}
+function renderProfile(s){const name=s.fullName||((s.firstName||'')+' '+(s.lastName||'')).trim();const e=s.enrollments?.[0]||{};const photo=s.photoUrl||'';document.getElementById('studentContent').innerHTML=`<div class="student-card"><div class="student-back"><button class="student-btn secondary" onclick="loadStudentList()">← Student List</button></div><div class="profile-grid"><div>${photo?`<img class="profile-photo" src="${esc(photo)}" alt="${esc(name)}">`:`<div class="profile-photo placeholder">${esc((s.firstName||name||'?')[0].toUpperCase())}</div>`}</div><div><h2>${esc(name)}</h2><div class="profile-details"><div class="detail"><small>Admission No.</small>${esc(s.admissionNo)}</div><div class="detail"><small>SR No.</small>${esc(s.srNo)}</div><div class="detail"><small>Roll Number</small>${esc(s.rollNumber||e.rollNumber)}</div><div class="detail"><small>Status</small>${esc(s.status)}</div><div class="detail"><small>Class</small>${esc(e.class?.name)}</div><div class="detail"><small>Section</small>${esc(e.section?.name)}</div><div class="detail"><small>Date of Birth</small>${esc(formatDate(s.dob))}</div><div class="detail"><small>Gender</small>${esc(s.gender)}</div><div class="detail"><small>Father Name</small>${esc(s.fatherName)}</div><div class="detail"><small>Father Phone</small>${esc(s.fatherPhone)}</div><div class="detail"><small>Mother Name</small>${esc(s.motherName)}</div><div class="detail"><small>Phone</small>${esc(s.phone)}</div><div class="detail"><small>Email</small>${esc(s.email)}</div><div class="detail"><small>Blood Group</small>${esc(s.bloodGroup)}</div><div class="detail" style="grid-column:1/-1"><small>Address</small>${esc(s.address)}</div></div><div class="student-actions"><button class="student-btn primary" onclick="loadIcard('${esc(s.id)}')">Print I-Card</button><button class="student-btn danger" onclick="deleteStudent('${esc(s.id)}')">Move to Recycle Bin</button></div></div></div></div>`;}
+function formatDate(v){if(!v)return '';try{return new Date(v).toLocaleDateString('en-IN')}catch{return v}}
+async function deleteStudent(id){if(!confirm('Move this student to the recycle bin?'))return;try{await api(API+'/'+encodeURIComponent(id),{method:'DELETE'});alert('Student moved to recycle bin.');loadStudentList();}catch(err){alert(err.message)}}
 
-  const query = (document.getElementById("studentSearch")?.value || "").trim().toLowerCase();
-  const rows = studentCache.filter(s => [s.name, s.fullName, s.firstName, s.lastName, s.fatherName, s.father_name, s.class, s.email, s.course]
-    .some(v => String(v ?? "").toLowerCase().includes(query)));
+async function loadIcard(id){setActive(2);if(!id){id=currentStudent?.id;if(!id){loadStudentList();return;}}if(!currentStudent||currentStudent.id!==id){try{const r=await api(API+'/'+encodeURIComponent(id));currentStudent=r.data||r.student||r;}catch(err){document.getElementById('studentContent').innerHTML='<div class="student-card"><div class="student-error">'+esc(err.message)+'</div></div>';return;}}renderIcard(currentStudent);}
+function renderIcard(s){const e=s.enrollments?.[0]||{};const name=s.fullName||((s.firstName||'')+' '+(s.lastName||'')).trim();const photo=s.photoUrl||'';document.getElementById('studentContent').innerHTML=`<div class="student-card"><div class="student-toolbar"><h2 style="margin:0">Student I-Card</h2><span style="flex:1"></span><button class="student-btn secondary" onclick="loadProfile('${esc(s.id)}')">← Profile</button><button class="student-btn primary" onclick="window.print()">Print</button></div><div class="id-card"><div class="id-head"><h2>R.M.S ACADEMY</h2><div class="muted">STUDENT IDENTITY CARD</div></div><div class="id-body"><div class="id-row"><div>${photo?`<img class="id-photo" src="${esc(photo)}">`:'<div class="id-photo" style="display:flex;align-items:center;justify-content:center;font-size:32px">'+esc((s.firstName||name||'?')[0].toUpperCase())+'</div>'}</div><div class="id-info"><p><b>${esc(name)}</b></p><p>Admission: ${esc(s.admissionNo)}</p><p>Roll: ${esc(s.rollNumber||e.rollNumber)}</p><p>Class: ${esc(e.class?.name)} ${e.section?.name?'• '+esc(e.section.name):''}</p><p>DOB: ${esc(formatDate(s.dob))}</p><p>Father: ${esc(s.fatherName)}</p><p>Phone: ${esc(s.phone||s.fatherPhone)}</p></div></div></div></div></div>`;}
 
-  body.innerHTML = rows.map(s => {
-    const className = s.class ?? s.enrollments?.[0]?.class?.name ?? "";
-    return `
-    <tr>
-      <td>${escapeHtml(s.name ?? s.fullName ?? `${s.firstName ?? ""} ${s.lastName ?? ""}`.trim())}</td>
-      <td>${escapeHtml(s.fatherName ?? s.father_name)}</td>
-      <td>${escapeHtml(className)}</td>
-      <td>${escapeHtml(s.email)}</td>
-      <td>${escapeHtml(s.course)}</td>
-    </tr>`;
-  }).join("");
-
-  status.style.display = rows.length ? "none" : "block";
-  status.className = rows.length ? "student-loading" : "student-empty";
-  if (!rows.length) status.textContent = query ? "No students match your search." : "No student records found.";
-  wrap.style.display = rows.length ? "block" : "none";
-  count.textContent = `${rows.length} student${rows.length === 1 ? "" : "s"}${query ? ` found for “${query}”` : ""}`;
-}
-
-function loadIcard() {
-  document.getElementById("studentContent").innerHTML = '<div class="form-panel"><h2>Student I-Card</h2><p>ID card generation here</p></div>';
-  setActive(2);
-}
-
-function loadProfile() {
-  document.getElementById("studentContent").innerHTML = '<div class="form-panel"><h2>Student Profile</h2><p>Student profile details here</p></div>';
-  setActive(3);
-}
-
-function goBack() { window.location.href = "/dashboard.html"; }
-
-function setActive(index) {
-  document.querySelectorAll(".sidebar ul li").forEach(i => i.classList.remove("active"));
-  const item = document.querySelectorAll(".sidebar ul li")[index];
-  if (item) item.classList.add("active");
-}
+loadAdmission();
 </script>
 </body>
 </html>
