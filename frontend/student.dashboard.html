@@ -92,7 +92,12 @@ async function loadStudentList() {
     if (!response.ok) throw new Error("Unable to load student records (" + response.status + ")");
     const data = await response.json();
     if (requestId !== studentListRequest) return;
-    studentCache = Array.isArray(data) ? data : [];
+
+    // REST API returns { success: true, data: { students, total, ... } }.
+    // The previous code expected the response itself to be an array, which
+    // silently converted a successful API response into an empty student list.
+    const students = data?.data?.students ?? data?.students ?? data?.data ?? data;
+    studentCache = Array.isArray(students) ? students : [];
     renderStudentRows();
   } catch (error) {
     if (requestId !== studentListRequest) return;
@@ -110,17 +115,20 @@ function renderStudentRows() {
   if (!body || !status || !wrap || !count) return;
 
   const query = (document.getElementById("studentSearch")?.value || "").trim().toLowerCase();
-  const rows = studentCache.filter(s => [s.name, s.fatherName, s.father_name, s.class, s.email, s.course]
+  const rows = studentCache.filter(s => [s.name, s.fullName, s.firstName, s.lastName, s.fatherName, s.father_name, s.class, s.email, s.course]
     .some(v => String(v ?? "").toLowerCase().includes(query)));
 
-  body.innerHTML = rows.map(s => `
+  body.innerHTML = rows.map(s => {
+    const className = s.class ?? s.enrollments?.[0]?.class?.name ?? "";
+    return `
     <tr>
-      <td>${escapeHtml(s.name)}</td>
+      <td>${escapeHtml(s.name ?? s.fullName ?? `${s.firstName ?? ""} ${s.lastName ?? ""}`.trim())}</td>
       <td>${escapeHtml(s.fatherName ?? s.father_name)}</td>
-      <td>${escapeHtml(s.class)}</td>
+      <td>${escapeHtml(className)}</td>
       <td>${escapeHtml(s.email)}</td>
       <td>${escapeHtml(s.course)}</td>
-    </tr>`).join("");
+    </tr>`;
+  }).join("");
 
   status.style.display = rows.length ? "none" : "block";
   status.className = rows.length ? "student-loading" : "student-empty";
